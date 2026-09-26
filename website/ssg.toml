@@ -1,0 +1,16 @@
+site_name = "jsdev"
+site_title = "jsdev — Portable, Hardened JavaScript (Node.js 22 LTS) AI Developer Container"
+site_description = "Portable, hardened JavaScript development container with TMUX IDE, MCP AI agent tooling, Node.js 22 LTS, Biome, ESLint, Prettier, mobile WebTTY, and dotfiles bootstrap."
+base_url = "https://jsdev.hyperbox.run/"
+language = "en-GB"
+
+content_dir = "content"
+template_dir = "_layouts"
+output_dir = "public"
+
+[agents]
+agents_txt = true
+ai_plugin = true
+
+[agents.mcp]
+enabled = true

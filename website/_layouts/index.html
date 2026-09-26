@@ -1,0 +1,126 @@
+{{#extends "base"}}
+{{#block "main"}}
+<section id="hero" class="hero-section">
+  <div class="container hero-container text-center">
+    <div class="pill-badge">
+      <span class="pill-tag">NEW</span>
+      <span class="pill-text">v0.0.1 Initial Release · TMUX IDE · MCP Agent · Worktrees</span>
+    </div>
+    <h1 class="hero-title">{{headline}}</h1>
+    <p class="hero-lead">{{lead}}</p>
+    <div class="hero-cta-group">
+      <a class="btn btn-primary btn-lg" href="#quickstart">Quick Start</a>
+      <a class="btn btn-secondary btn-lg" href="https://github.com/sebastienrousseau/{{name}}" target="_blank" rel="noopener">Star on GitHub</a>
+    </div>
+
+    <!-- Authentic 4-Pane TMUX IDE Terminal Grid -->
+    <figure class="terminal-preview-card" aria-label="4-Pane TMUX IDE Grid Preview">
+      <figcaption class="terminal-header">
+        <div class="window-dots">
+          <span class="dot dot-red" aria-hidden="true"></span>
+          <span class="dot dot-yellow" aria-hidden="true"></span>
+          <span class="dot dot-green" aria-hidden="true"></span>
+        </div>
+        <div class="terminal-tab-bar font-mono">
+          <span class="tmux-win-badge">[jsdev]</span>
+          <span class="tab-item active-tab">0:ide* (4 panes)</span>
+          <span class="tab-item">1:bash</span>
+          <span class="tab-item">2:mcp</span>
+        </div>
+        <div class="terminal-actions">
+          <span class="badge-status font-mono">● Node.js 22 LTS · Biome · Prettier (Prefix + i)</span>
+        </div>
+      </figcaption>
+
+      <div class="tmux-grid">
+        <!-- Pane 1: Project Explorer (Left 20%) -->
+        <div class="tmux-pane pane-explorer font-mono">
+          <div class="pane-header">
+            <span class="pane-title">1: Explorer</span>
+            <span class="pane-badge">/work</span>
+          </div>
+          <div class="pane-content explorer-content">
+<div class="tree-node dir">▼ src/</div>
+<div class="tree-node file active">▶ server.js</div>
+<div class="tree-node file">  routes.js</div>
+<div class="tree-node file">  index.js</div>
+<div class="tree-node dir">▼ test/</div>
+<div class="tree-node file">  server.test.js</div>
+<div class="tree-node file">biome.json</div>
+<div class="tree-node file">package.json</div>
+          </div>
+        </div>
+
+        <!-- Center Column: Pane 2 (Editor Top) + Pane 3 (Terminal Bottom) -->
+        <div class="tmux-center-col">
+          <!-- Pane 2: Editor (Neovim LSP) -->
+          <div class="tmux-pane pane-editor font-mono">
+            <div class="pane-header">
+              <span class="pane-title">2: Neovim (LSP)</span>
+              <span class="pane-file">src/server.js</span>
+            </div>
+            <div class="pane-content editor-content" tabindex="0" role="region" aria-label="Neovim Code Editor">
+              <pre class="editor-code font-mono"><code><span class="code-comment">// src/server.js · Node.js 22 LTS ESM Native</span>
+<span class="code-kw">import</span> { createServer } <span class="code-kw">from</span> <span class="code-str">"node:http"</span>;
+<span class="code-kw">import</span> { env } <span class="code-kw">from</span> <span class="code-str">"node:process"</span>;
+
+<span class="code-kw">export function</span> <span class="code-fn">startServer</span>(port = env.PORT || 3000) {
+  <span class="code-kw">const</span> server = createServer(<span class="code-kw">async</span> (req, res) =&gt; {
+    <span class="code-kw">const</span> { pathname } = <span class="code-kw">new</span> URL(req.url, <span class="code-str">`http://${req.headers.host}`</span>);
+    <span class="code-kw">if</span> (pathname === <span class="code-str">"/healthz"</span>) {
+      res.writeHead(200, { <span class="code-str">"Content-Type"</span>: <span class="code-str">"application/json"</span> });
+      <span class="code-kw">return</span> res.end(JSON.stringify({ status: <span class="code-str">"ok"</span>, uptime: process.uptime() }));
+    }
+    res.writeHead(404).end();
+  });
+  <span class="code-kw">return</span> server.listen(port);
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Pane 3: Integrated Shell / Test Runner -->
+          <div class="tmux-pane pane-terminal font-mono">
+            <div class="pane-header">
+              <span class="pane-title">3: Shell / Tests</span>
+              <span class="pane-badge">idle</span>
+            </div>
+            <div class="pane-content terminal-content font-mono" tabindex="0" role="region" aria-label="Integrated Terminal">
+<div class="cli-line"><span class="mcp-tl-ps">$ </span>node --test &amp;&amp; pnpm lint</div>
+<div class="cli-out">✓ tests 14 · suites 3 · passed 14 (12ms)</div>
+<div class="cli-out cli-ok">✓ biome check: 0 errors, 0 warnings (10 files formatted)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pane 4: AI Agent / MCP Server (Right 24%) -->
+        <div class="tmux-pane pane-ai font-mono">
+          <div class="pane-header">
+            <span class="pane-title">4: Claude Code</span>
+            <span class="pane-badge ai-badge">MCP Agent</span>
+          </div>
+          <div class="pane-content ai-content font-mono" tabindex="0" role="region" aria-label="AI Agent Panel">
+<div class="ai-prompt"><span class="ai-sym">&gt;</span> Claude Code (MCP)</div>
+<div class="ai-tool">⏺ Tool: muxtree.create("feat/fastify-routes")</div>
+<div class="ai-res">✓ Created worktree in /work/.worktrees/fastify-routes</div>
+<div class="ai-tool">⏺ Tool: mcp.exec("node --test")</div>
+<div class="ai-res">✓ 14 unit tests passed (0 failures)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TMUX Status Bar -->
+      <div class="tmux-status-bar font-mono">
+        <span class="status-left">[jsdev:ide*] 0:ide* (4 panes) "jsdev-ide" 20:00</span>
+        <span class="status-center">muxtree: main (clean) · mcp: stdio (JSON-RPC)</span>
+        <span class="status-right">20:00 26-Sep-26</span>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<!-- Content sections rendered from Markdown -->
+<div class="content-sections">
+  {{!content}}
+</div>
+
+{{/block}}
